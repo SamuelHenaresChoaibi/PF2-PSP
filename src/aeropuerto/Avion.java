@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class Avion implements Runnable{
     private int id;
-    private Estados estados;
+    private Estados estado;
     private TorreControl torreControl;
     private boolean haAterrizado = false;
     private boolean haDespegado = false;
@@ -14,15 +14,15 @@ public class Avion implements Runnable{
     public Avion(int id, TorreControl torreControl) {
         this.id = id;
         this.torreControl = torreControl;
-        this.estados = Estados.EN_VUELO;
+        this.estado = Estados.EN_VUELO;
     }
 
     public int getId() {
         return id;
     }
 
-    public Estados getEstados() {
-        return estados;
+    public Estados getEstado() {
+        return estado;
     }
 
     public boolean isHaAterrizado() {
@@ -38,7 +38,7 @@ public class Avion implements Runnable{
     }
 
     public void cambiarEstado(Estados estado) {
-        this.estados = estado;
+        this.estado = estado;
     }
 
     @Override
