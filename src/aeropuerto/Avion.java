@@ -1,27 +1,28 @@
 package aeropuerto;
 
-import utils.Estados;
+import utils.Estado;
+import utils.HerramientasAuxiliares;
 
 import java.util.Random;
 
 public class Avion implements Runnable{
-    private int id;
-    private Estados estado;
+    private String id;
+    private Estado estado;
     private TorreControl torreControl;
     private boolean haAterrizado = false;
     private boolean haDespegado = false;
 
-    public Avion(int id, TorreControl torreControl) {
+    public Avion(String id, TorreControl torreControl) {
         this.id = id;
         this.torreControl = torreControl;
-        this.estado = Estados.EN_VUELO;
+        this.estado = HerramientasAuxiliares.getEstadoRandom();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public Estados getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
@@ -33,43 +34,62 @@ public class Avion implements Runnable{
         return haDespegado;
     }
 
-    public TorreControl getTorreControl() {
-        return torreControl;
-    }
-
-    public void cambiarEstado(Estados estado) {
+    public void cambiarEstado(Estado estado) {
         this.estado = estado;
     }
 
     @Override
     public void run() {
         try {
-            //Aterrizaje
-            cambiarEstado(Estados.ESPERANDO);
-            torreControl.solicitarAterrizar(this);
+            //Primer Ciclo
+            if (estado == Estado.EN_VUELO) {
+                // Solo aterriza
+                cambiarEstado(Estado.ESPERANDO);
+                torreControl.solicitarAterrizar(this);
+                cambiarEstado(Estado.ATERRIZANDO);
+                Thread.sleep(2000 + new Random().nextInt(6000));
+                torreControl.notificarLiberacionPista(this);
+                cambiarEstado(Estado.EN_TERMINAL);
+                haAterrizado = true;
 
-            cambiarEstado(Estados.ATERRIZANDO);
-            Thread.sleep(new Random().nextInt(1000,10000));
+            } else if (estado == Estado.EN_TERMINAL) {
+                // Solo despega
+                cambiarEstado(Estado.ESPERANDO);
+                torreControl.solicitarDespegar(this);
+                cambiarEstado(Estado.DESPEGANDO);
+                Thread.sleep(2000 + new Random().nextInt(6000));
+                torreControl.notificarLiberacionPista(this);
+                cambiarEstado(Estado.EN_VUELO);
+                haDespegado = true;
+            }
 
-            torreControl.notificarLiberacionPista(this);
-            cambiarEstado(Estados.EN_TERMINAL);
-            haAterrizado = true;
+            // Tiempo en tierra o en vuelo antes del segundo ciclo
+            Thread.sleep(2000 + new Random().nextInt(3000));
 
-            Thread.sleep(3000);
+            //Segundo ciclo
+            if (haAterrizado && !haDespegado) {
+                //Ahora despega
+                cambiarEstado(Estado.ESPERANDO);
+                torreControl.solicitarDespegar(this);
+                cambiarEstado(Estado.DESPEGANDO);
+                Thread.sleep(2000 + new Random().nextInt(6000));
+                torreControl.notificarLiberacionPista(this);
+                cambiarEstado(Estado.EN_VUELO);
+                haDespegado = true;
 
-            //Despegue
-            cambiarEstado(Estados.ESPERANDO);
-            torreControl.solicitarDespegar(this);
-
-            cambiarEstado(Estados.DESPEGANDO);
-            Thread.sleep(new Random().nextInt(1000,10000));
-
-            torreControl.notificarLiberacionPista(this);
-            cambiarEstado(Estados.EN_VUELO);
-            haDespegado = true;
+            } else if (haDespegado && !haAterrizado) {
+                //Ahora aterriza
+                cambiarEstado(Estado.ESPERANDO);
+                torreControl.solicitarAterrizar(this);
+                cambiarEstado(Estado.ATERRIZANDO);
+                Thread.sleep(2000 + new Random().nextInt(6000));
+                torreControl.notificarLiberacionPista(this);
+                cambiarEstado(Estado.EN_TERMINAL);
+                haAterrizado = true;
+            }
 
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
         }
     }
 

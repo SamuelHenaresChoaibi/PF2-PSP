@@ -1,5 +1,5 @@
 package utils;
 
-public enum Estados {
+public enum Estado {
     EN_VUELO, ESPERANDO, ATERRIZANDO, EN_TERMINAL, DESPEGANDO
 }

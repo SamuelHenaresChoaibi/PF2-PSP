@@ -1,6 +1,6 @@
 package aeropuerto;
 
-import utils.Estados;
+import utils.HerramientasAuxiliares;
 
 import java.util.List;
 
@@ -19,11 +19,17 @@ public class Aeropuerto {
         this.aviones = aviones;
     }
 
-    public void mostrarEstado() {
-        System.out.println("-------- ESTADO DE LOS AVIONES --------");
+    public void mostrarEstados() {
+        System.out.println("══════════════════════════════════════════════");
+        System.out.println("      ESTADO DE LOS AVIONES      ");
+        System.out.println("══════════════════════════════════════════════");
         for (Avion avion : aviones) {
-            System.out.println("[" + avion.getId() + "] -> " + avion.getEstado());
+            System.out.println("[" + avion.getId() + "] → " + HerramientasAuxiliares.escribirTextoEstado(avion.getEstado()));
         }
-        System.out.println("---------------------------------------");
+        System.out.println("══════════════════════════════════════════════");
+    }
+
+    public boolean todosFinalizados() {
+        return aviones.stream().allMatch(Avion::haFinalizado);
     }
 }
