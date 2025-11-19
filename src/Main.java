@@ -63,12 +63,12 @@ void main() {
 
     double fin = System.currentTimeMillis();
 
-    System.out.println("\n════════════════════════════════════════════════════════════════════════════════════════════");
-    System.out.println("                                        RESULTADO FINAL                                     ");
-    System.out.println("════════════════════════════════════════════════════════════════════════════════════════════");
-    System.out.println("Operaciones de aterrizaje y despegue realizadas: " + aviones.size() * 2);
-    System.out.println("Tiempo total de simulación: " + (fin - incio) / 1000 + " segundos");
-    System.out.println("¡Simulación finalizada correctamente!");
+    HerramientasAuxiliares.imprimirYGuardar("════════════════════════════════════════════════════════════════════════════════════════════");
+    HerramientasAuxiliares.imprimirYGuardar("                                        ⚡RESULTADO FINAL⚡                                     ");
+    HerramientasAuxiliares.imprimirYGuardar("════════════════════════════════════════════════════════════════════════════════════════════");
+    HerramientasAuxiliares.imprimirYGuardar("\uD83D\uDEA6 Operaciones de aterrizaje y despegue realizadas: " + aviones.size() * 2);
+    HerramientasAuxiliares.imprimirYGuardar("⏱\uFE0F Tiempo total de simulación: " + (fin - incio) / 1000 + " segundos");
+    HerramientasAuxiliares.imprimirYGuardar("\uD83C\uDF1F¡Simulación finalizada correctamente!\uD83C\uDF1F");
 
     scan.close();
 

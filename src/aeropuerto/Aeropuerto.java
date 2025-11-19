@@ -16,15 +16,18 @@ public class Aeropuerto {
     }
 
     public void mostrarEstados(TorreControl torreControl) {
-        System.out.println("\n\n════════════════════════════════════════════════════════════════════════════════════════════");
-        System.out.println("                               ESTADO DE LOS AVIONES                                        ");
-        System.out.println("                   Aviones: " + aviones.size() + "    ||   Pistas disponibles: " + torreControl.pistasDisponibles() + "/" + torreControl.getNumPistasActuales());
-        System.out.println("            Meteorologia: " + HerramientasAuxiliares.escribirtextoMeteorologia(torreControl.getMeteorologia()) + "  ||  Pistas cerradas temporalmente: " + torreControl.getMeteorologia().getPistasCerradas());
-        System.out.println("════════════════════════════════════════════════════════════════════════════════════════════");
-        for (Avion avion : aviones) {
-            System.out.println("[" + avion.getId() + "] (COMBUSTIBLE: " + avion.getCombustibleRestante() +"/" + avion.getTanqueCombustibleCapacidadLitros() + ") → " + HerramientasAuxiliares.escribirTextoEstado(avion.getEstado()));
+        HerramientasAuxiliares.imprimirYGuardar("════════════════════════════════════════════════════════════════════════════════════════════");
+        HerramientasAuxiliares.imprimirYGuardar("                           ESTADO DE LOS AVIONES                                    ");
+        HerramientasAuxiliares.imprimirYGuardar("                   \uD83D\uDEE9\uFE0FAviones: " + aviones.size() + "    ||   ✔\uFE0FPistas disponibles: " + torreControl.pistasDisponibles() + "/" + torreControl.getNumPistasActuales());
+        HerramientasAuxiliares.imprimirYGuardar("            ❄\uFE0FMeteorologia: " + HerramientasAuxiliares.escribirtextoMeteorologia(torreControl.getMeteorologia()) + "  ||  ✖\uFE0FPistas cerradas temporalmente: " + torreControl.getMeteorologia().getPistasCerradas());
+        HerramientasAuxiliares.imprimirYGuardar("════════════════════════════════════════════════════════════════════════════════════════════");
+
+        for (int i = 0; i < aviones.size(); i++) {
+            HerramientasAuxiliares.imprimirYGuardar(" [" + aviones.get(i).getId() + "] (COMBUSTIBLE INICIAL: " + aviones.get(i).getCombustibleRestante() + "/" + aviones.get(i).getTanqueCombustibleCapacidadLitros() + "L || CONSUMO: " + aviones.get(i).getConsumoLitrosPorHoraCombustible() + "L/h)⛽ → " + HerramientasAuxiliares.escribirTextoEstado(aviones.get(i).getEstado()));
+
         }
-        System.out.println("════════════════════════════════════════════════════════════════════════════════════════════");
+
+        HerramientasAuxiliares.imprimirYGuardar("════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     public boolean todosFinalizados() {

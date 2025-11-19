@@ -102,11 +102,11 @@ public class TorreControl {
     }
 
     public void notificarLiberacionPista(Avion a) {
-        System.out.println("\n*************************");
-        String accion = (a.getEstado() == Estado.ATERRIZANDO) ? "HA ATERRIZADO" : "HA DESPEGADO";
+        HerramientasAuxiliares.imprimirYGuardar("*************************");
+        String accion = (a.getEstado() == Estado.ATERRIZANDO) ? "HA ATERRIZADO\uD83D\uDEEB" : "HA DESPEGADO\uD83D\uDEEB";
         String emergencia = estaEnEmergencia(a) ? " ¡¡¡EMERGENCIA COMBUSTIBLE!!! " : "";
-        System.out.println("[" + a.getId() + "] " + accion + emergencia);
-        System.out.println("*************************");
+        HerramientasAuxiliares.imprimirYGuardar("[" + a.getId() + "] " + accion + emergencia);
+        HerramientasAuxiliares.imprimirYGuardar("*************************");
 
         pistas.release();
         lock.lock();
@@ -119,9 +119,9 @@ public class TorreControl {
 
     public void comprobarSiHayPistasDisponibles() {
         if (numPistasActuales == 0) {
-            System.out.println("\n·····················································································");
-            System.out.println("ACTUALMENTE NO HAY PISTAS DISPONIBLES, ESPERE A QUE EL TIEMPO MEJORE PARA PODER SEGUIR");
-            System.out.println("······················································································");
+            HerramientasAuxiliares.imprimirYGuardar("·····················································································");
+            HerramientasAuxiliares.imprimirYGuardar("ACTUALMENTE NO HAY PISTAS DISPONIBLES, ESPERE A QUE EL TIEMPO MEJORE PARA PODER SEGUIR");
+            HerramientasAuxiliares.imprimirYGuardar("······················································································");
         }
     }
 
