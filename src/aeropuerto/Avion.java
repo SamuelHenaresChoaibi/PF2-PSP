@@ -1,6 +1,5 @@
 package aeropuerto;
 
-import utils.Estado;
 import utils.HerramientasAuxiliares;
 
 import java.util.Random;
@@ -11,11 +10,17 @@ public class Avion implements Runnable{
     private TorreControl torreControl;
     private boolean haAterrizado = false;
     private boolean haDespegado = false;
+    private double tanqueCombustibleCapacidadLitros;
+    private double combustibleRestante;
+    private double consumoLitrosPorHoraCombustible;
 
     public Avion(String id, TorreControl torreControl) {
         this.id = id;
         this.torreControl = torreControl;
         this.estado = HerramientasAuxiliares.getEstadoRandom();
+        this.tanqueCombustibleCapacidadLitros = HerramientasAuxiliares.asignarCapacidadYCantidadTanqueCombustible();
+        this.combustibleRestante = (double) (Math.round(tanqueCombustibleCapacidadLitros * (0.50 + Math.random() * 0.50) * 100)) / 100;
+        this.consumoLitrosPorHoraCombustible = HerramientasAuxiliares.asignarConsumoDeCombustible();
     }
 
     public String getId() {
@@ -24,6 +29,18 @@ public class Avion implements Runnable{
 
     public Estado getEstado() {
         return estado;
+    }
+
+    public double getTanqueCombustibleCapacidadLitros() {
+        return tanqueCombustibleCapacidadLitros;
+    }
+
+    public double getConsumoLitrosPorHoraCombustible() {
+        return consumoLitrosPorHoraCombustible;
+    }
+
+    public double getCombustibleRestante() {
+        return combustibleRestante;
     }
 
     public boolean isHaAterrizado() {
@@ -95,6 +112,18 @@ public class Avion implements Runnable{
 
     public boolean haFinalizado() {
         return haAterrizado && haDespegado;
+    }
+
+    public void reducirCombustible() {
+        if (estado == Estado.EN_VUELO || estado == Estado.ESPERANDO) {
+            if (combustibleRestante > 0) {
+                combustibleRestante -= consumoLitrosPorHoraCombustible;
+                if (combustibleRestante < 0) {
+                    combustibleRestante = 0.0;
+                }
+                combustibleRestante = Math.round(combustibleRestante * 100.0) / 100.0;
+            }
+        }
     }
 
 }

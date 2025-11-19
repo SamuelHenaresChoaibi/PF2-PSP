@@ -15,18 +15,16 @@ public class Aeropuerto {
         return aviones;
     }
 
-    public void setAviones(List<Avion> aviones) {
-        this.aviones = aviones;
-    }
-
-    public void mostrarEstados() {
-        System.out.println("══════════════════════════════════════════════");
-        System.out.println("      ESTADO DE LOS AVIONES      ");
-        System.out.println("══════════════════════════════════════════════");
+    public void mostrarEstados(TorreControl torreControl) {
+        System.out.println("\n\n════════════════════════════════════════════════════════════════════════════════════════════");
+        System.out.println("                               ESTADO DE LOS AVIONES                                        ");
+        System.out.println("                   Aviones: " + aviones.size() + "    ||   Pistas disponibles: " + torreControl.pistasDisponibles() + "/" + torreControl.getNumPistasActuales());
+        System.out.println("            Meteorologia: " + HerramientasAuxiliares.escribirtextoMeteorologia(torreControl.getMeteorologia()) + "  ||  Pistas cerradas temporalmente: " + torreControl.getMeteorologia().getPistasCerradas());
+        System.out.println("════════════════════════════════════════════════════════════════════════════════════════════");
         for (Avion avion : aviones) {
-            System.out.println("[" + avion.getId() + "] → " + HerramientasAuxiliares.escribirTextoEstado(avion.getEstado()));
+            System.out.println("[" + avion.getId() + "] (COMBUSTIBLE: " + avion.getCombustibleRestante() +"/" + avion.getTanqueCombustibleCapacidadLitros() + ") → " + HerramientasAuxiliares.escribirTextoEstado(avion.getEstado()));
         }
-        System.out.println("══════════════════════════════════════════════");
+        System.out.println("════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     public boolean todosFinalizados() {
