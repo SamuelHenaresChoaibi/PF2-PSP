@@ -5,14 +5,14 @@ import utils.HerramientasAuxiliares;
 import java.util.Random;
 
 public class Avion implements Runnable{
-    private String id;
+    private final String id;
     private Estado estado;
-    private TorreControl torreControl;
+    private final TorreControl torreControl;
     private boolean haAterrizado = false;
     private boolean haDespegado = false;
-    private double tanqueCombustibleCapacidadLitros;
+    private final double tanqueCombustibleCapacidadLitros;
     private double combustibleRestante;
-    private double consumoLitrosPorHoraCombustible;
+    private final double consumoLitrosPorHoraCombustible;
 
     public Avion(String id, TorreControl torreControl) {
         this.id = id;

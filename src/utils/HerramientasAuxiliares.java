@@ -12,26 +12,26 @@ import java.util.List;
 import java.util.Random;
 
 public class HerramientasAuxiliares {
+
     private static final String RUTA_LOG = "src/resources/simulacion_aeropuerto.txt";
     private static boolean logInicializado = false;
     private static final DateTimeFormatter FORMATEADOR_HORA =
             DateTimeFormatter.ofPattern("HH:mm:ss");
 
+    // Genera un ID aleatorio para un avión (letras + dígitos)
     public static String crearIdRandomAvion() {
         Random random = new Random();
         int numLetras = random.nextInt(5) + 1;
         int numDigitos = random.nextInt(5) + 1;
 
         String sb = "";
-        for (int i = 0; i < numLetras; i++) {
-            sb += (char) ('A' + random.nextInt(26));
-        }
-        for (int i = 0; i < numDigitos; i++) {
-            sb += (random.nextInt(10));
-        }
+        for (int i = 0; i < numLetras; i++) sb += (char) ('A' + random.nextInt(26));
+        for (int i = 0; i < numDigitos; i++) sb += (random.nextInt(10));
+
         return sb;
     }
 
+    // Devuelve texto con emojis según el estado de un avión
     public static String escribirTextoEstado(Estado estado) {
         return switch (estado) {
             case Estado.EN_VUELO -> "✈\uFE0FEN VUELO✈\uFE0F";
@@ -42,6 +42,7 @@ public class HerramientasAuxiliares {
         };
     }
 
+    // Devuelve texto con emojis según la meteorología
     public static String escribirtextoMeteorologia(Meteorologia meteorologia) {
         return switch (meteorologia) {
             case Meteorologia.DESPEJADO -> "☀\uFE0FDESPEJADO☀\uFE0F";
@@ -51,9 +52,9 @@ public class HerramientasAuxiliares {
         };
     }
 
+    // Devuelve un estado aleatorio para el avión (EN_VUELO o EN_TERMINAL)
     public static Estado getEstadoRandom() {
         int num = new Random().nextInt(1, 3);
-
         return switch (num) {
             case 1 -> Estado.EN_VUELO;
             case 2 -> Estado.EN_TERMINAL;
@@ -61,15 +62,16 @@ public class HerramientasAuxiliares {
         };
     }
 
+    // Muestra los estados iniciales de los aviones y escribe en el log
     public static void mostrarEstadosIniciales(List<Avion> aviones, List<Estado> estadosIniciales, TorreControl torreControl) {
         imprimirYGuardar("════════════════════════════════════════════════════════════════════════════════════════════");
         imprimirYGuardar("                           ESTADO INICIAL DE LOS AVIONES                                    ");
-        imprimirYGuardar("                   \uD83D\uDEE9\uFE0FAviones: " + aviones.size() + "    ||   ✔\uFE0FPistas disponibles: " + torreControl.pistasDisponibles() + "/" + torreControl.getNumPistasActuales());
-        imprimirYGuardar("            ❄\uFE0FMeteorologia: " + HerramientasAuxiliares.escribirtextoMeteorologia(torreControl.getMeteorologia()) + "  ||  ✖\uFE0FPistas cerradas temporalmente: " + torreControl.getMeteorologia().getPistasCerradas());
+        imprimirYGuardar("                   ✈️Aviones: " + aviones.size() + "    ||   ✔️Pistas disponibles: " + torreControl.pistasDisponibles() + "/" + torreControl.getNumPistasActuales());
+        imprimirYGuardar("            ❄️Meteorologia: " + escribirtextoMeteorologia(torreControl.getMeteorologia()) + "  ||  ✖️Pistas cerradas temporalmente: " + torreControl.getMeteorologia().getPistasCerradas());
         imprimirYGuardar("════════════════════════════════════════════════════════════════════════════════════════════");
 
         for (int i = 0; i < aviones.size(); i++) {
-            imprimirYGuardar(" [" + aviones.get(i).getId() + "] (COMBUSTIBLE INICIAL: " + aviones.get(i).getCombustibleRestante() + "/" + aviones.get(i).getTanqueCombustibleCapacidadLitros() + "L || CONSUMO: " + aviones.get(i).getConsumoLitrosPorHoraCombustible() + "L/h)⛽ → " + HerramientasAuxiliares.escribirTextoEstado(estadosIniciales.get(i)));
+            imprimirYGuardar(" [" + aviones.get(i).getId() + "] (COMBUSTIBLE INICIAL: " + aviones.get(i).getCombustibleRestante() + "/" + aviones.get(i).getTanqueCombustibleCapacidadLitros() + "L || CONSUMO: " + aviones.get(i).getConsumoLitrosPorHoraCombustible() + "L/h)⛽ → " + escribirTextoEstado(estadosIniciales.get(i)));
         }
 
         imprimirYGuardar("════════════════════════════════════════════════════════════════════════════════════════════");
@@ -77,14 +79,17 @@ public class HerramientasAuxiliares {
         imprimirYGuardar("════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
+    // Asigna capacidad de combustible aleatoria
     public static double asignarCapacidadYCantidadTanqueCombustible() {
-        return ((double) Math.round(new Random().nextDouble(100000, 300000 + 1) * 100) / 100);
+        return ((double) Math.round(new Random().nextDouble(100000, 300001) * 100) / 100);
     }
 
+    // Asigna consumo de combustible aleatorio por hora
     public static double asignarConsumoDeCombustible() {
-        return ((double) Math.round(new Random().nextDouble(10000, 20000 + 1) * 100) / 100);
+        return ((double) Math.round(new Random().nextDouble(10000, 20001) * 100) / 100);
     }
 
+    // Devuelve meteorología aleatoria
     public static Meteorologia getMeteorologiaRandom() {
         int num = new Random().nextInt(1, 6);
         return switch (num) {
@@ -95,33 +100,29 @@ public class HerramientasAuxiliares {
         };
     }
 
+    // Imprime en consola y guarda la línea en el log con hora
     public static void imprimirYGuardar(String texto) {
         inicializarLog();
         String lineaConHora = "[" + LocalDateTime.now().format(FORMATEADOR_HORA) + "] " + texto;
         System.out.println(lineaConHora);
-        try (PrintWriter pw = new PrintWriter(
-                new BufferedWriter(
-                        new FileWriter(RUTA_LOG, true)))) {
+        try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_LOG, true)))) {
             pw.println(lineaConHora);
         } catch (IOException e) {
             System.err.println("No se pudo escribir en el log: " + e.getMessage());
         }
     }
 
-
+    // Inicializa el log: crea carpeta, borra archivo viejo y crea uno nuevo
     private static void inicializarLog() {
         if (logInicializado) return;
         try {
             Files.createDirectories(Paths.get("src/resources"));
             Path p = Paths.get(RUTA_LOG);
-            if (Files.exists(p)) {
-                Files.delete(p);
-            }
+            if (Files.exists(p)) Files.delete(p);
             Files.createFile(p);
             logInicializado = true;
         } catch (IOException e) {
             System.err.println("Error al inicializar el log: " + e.getMessage());
         }
     }
-
 }
