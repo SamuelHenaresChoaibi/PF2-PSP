@@ -22,9 +22,8 @@ public class Aeropuerto {
         HerramientasAuxiliares.imprimirYGuardar("            ❄\uFE0FMeteorologia: " + HerramientasAuxiliares.escribirtextoMeteorologia(torreControl.getMeteorologia()) + "  ||  ✖\uFE0FPistas cerradas temporalmente: " + torreControl.getMeteorologia().getPistasCerradas());
         HerramientasAuxiliares.imprimirYGuardar("════════════════════════════════════════════════════════════════════════════════════════════");
 
-        for (int i = 0; i < aviones.size(); i++) {
-            HerramientasAuxiliares.imprimirYGuardar(" [" + aviones.get(i).getId() + "] (COMBUSTIBLE INICIAL: " + aviones.get(i).getCombustibleRestante() + "/" + aviones.get(i).getTanqueCombustibleCapacidadLitros() + "L || CONSUMO: " + aviones.get(i).getConsumoLitrosPorHoraCombustible() + "L/h)⛽ → " + HerramientasAuxiliares.escribirTextoEstado(aviones.get(i).getEstado()));
-
+        for (Avion avione : aviones) {
+            HerramientasAuxiliares.imprimirYGuardar(" [" + avione.getId() + "] (COMBUSTIBLE INICIAL: " + avione.getCombustibleRestante() + "/" + avione.getTanqueCombustibleCapacidadLitros() + "L || CONSUMO: " + avione.getConsumoLitrosPorHoraCombustible() + "L/h)⛽ → " + HerramientasAuxiliares.escribirTextoEstado(avione.getEstado()));
         }
 
         HerramientasAuxiliares.imprimirYGuardar("════════════════════════════════════════════════════════════════════════════════════════════");
